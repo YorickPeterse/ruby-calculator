@@ -2,34 +2,30 @@ module Calculator
   ##
   #
   class Lexer
-    attr_reader :string
-
     TOKENS = {
-      /\d+\.+\d*/ => :float,
-      /\d+/       => :int,
+      /\d+\.+\d*/ => :T_FLOAT,
+      /\d+/       => :T_INT,
       /\s+/       => nil,
-      /\+/        => :add,
-      /\*/        => :mul,
-      /\//        => :div,
-      /\-/        => :sub
+      /\+/        => :T_ADD,
+      /\*/        => :T_MUL,
+      /\//        => :T_DIV,
+      /\-/        => :T_SUB
     }
 
-    ##
-    # @param [String] string
-    #
-    def initialize(string)
-      @string = string
-      @scanner = StringScanner.new(string)
-    end
+    CONVERSION = {
+      :T_INT   => :to_i,
+      :T_FLOAT => :to_f
+    }
 
     ##
     # @return [Array]
     #
-    def lex
-      tokens = []
+    def lex(string)
+      scanner = StringScanner.new(string)
+      tokens  = []
 
-      until @scanner.eos?
-        token = next_token
+      until scanner.eos?
+        token = next_token(scanner)
 
         tokens << token if token
       end
@@ -37,19 +33,17 @@ module Calculator
       return tokens
     end
 
-    def next_token
+    def next_token(scanner)
       token = nil
 
       TOKENS.each do |pat, type|
-        found = @scanner.scan(pat)
+        found = scanner.scan(pat)
 
         if found and type
-          token = [type]
+          token = [type, nil]
 
-          if type == :int
-            token << found.to_i
-          elsif type == :float
-            token << found.to_f
+          if CONVERSION[type]
+            token[1] = found.send(CONVERSION[type])
           end
 
           break

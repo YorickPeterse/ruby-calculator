@@ -1,33 +1,33 @@
 require 'spec_helper'
 
 describe Calculator::Lexer do
+  before do
+    @lexer = Calculator::Lexer.new
+  end
+
   context 'numerical values' do
     example 'lex an integer' do
-      Calculator::Lexer.new('10').lex.should == [[:int, 10]]
+      @lexer.lex('10').should == [[:T_INT, 10]]
     end
 
     example 'lex a float' do
-      Calculator::Lexer.new('10.5').lex.should == [[:float, 10.5]]
+      @lexer.lex('10.5').should == [[:T_FLOAT, 10.5]]
     end
   end
 
   example 'lex an addition expression' do
-    Calculator::Lexer.new('10 + 20').lex
-      .should == [[:int, 10], [:add], [:int, 20]]
+    @lexer.lex('10 + 20').should == [[:T_INT, 10], [:T_ADD, nil], [:T_INT, 20]]
   end
 
   example 'lex a multiplication expression' do
-    Calculator::Lexer.new('10 * 2').lex
-      .should == [[:int, 10], [:mul], [:int, 2]]
+    @lexer.lex('10 * 2').should == [[:T_INT, 10], [:T_MUL, nil], [:T_INT, 2]]
   end
 
   example 'lex a division expression' do
-    Calculator::Lexer.new('10 / 2').lex
-      .should == [[:int, 10], [:div], [:int, 2]]
+    @lexer.lex('10 / 2').should == [[:T_INT, 10], [:T_DIV, nil], [:T_INT, 2]]
   end
 
   example 'lex a subtraction expression' do
-    Calculator::Lexer.new('10 - 2').lex
-      .should == [[:int, 10], [:sub], [:int, 2]]
+    @lexer.lex('10 - 2').should == [[:T_INT, 10], [:T_SUB, nil], [:T_INT, 2]]
   end
 end
