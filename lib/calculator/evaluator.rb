@@ -21,6 +21,17 @@ module Calculator
     def initialize
       @stack  = []
       @result = 0
+      @parser = Parser.new
+    end
+
+    ##
+    # @param [String] string
+    # @return [Numeric]
+    #
+    def evaluate_string(string)
+      ast = @parser.parse(string)
+
+      return evaluate(ast)
     end
 
     ##
