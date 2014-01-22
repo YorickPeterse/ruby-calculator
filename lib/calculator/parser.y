@@ -43,8 +43,4 @@ end
     do_parse
   end
 
----- header
-
-  require 'pry'
-
 # vim: set ft=racc:
