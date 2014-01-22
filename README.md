@@ -4,6 +4,10 @@ A basic calculator written in Ruby, featuring a custom lexer and parser. This
 repository is meant for educational purposes primarily in the field of writing
 programming languages. It is not a webscale replacement for `bc`.
 
+The idea is to use this repository to explain the steps of writing programming
+languages and how one can do so. It also serves as a playground for students
+(and myself) to mess around.
+
 ## Structure
 
 The project is divided into 3 categories:
