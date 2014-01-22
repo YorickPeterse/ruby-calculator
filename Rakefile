@@ -6,12 +6,15 @@ rule '.rb' => '.y' do |task|
   sh "racc -l -o #{task.name} #{task.source}"
 end
 
-desc 'Runs the tests'
-task :test => [:generate] do
-  sh 'rspec spec'
-end
-
 desc 'Generates the parser'
 task :generate => ['lib/calculator/parser.rb']
+
+desc 'Regenerates the parser'
+task :regenerate => [:clean, :generate]
+
+desc 'Runs the tests'
+task :test => [:regenerate] do
+  sh 'rspec spec'
+end
 
 task :default => :test
