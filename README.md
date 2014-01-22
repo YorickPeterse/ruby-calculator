@@ -1,41 +1,91 @@
 # Ruby Calculator
 
-Basic boilerplate and tests for writing a basic calculator in Ruby. The goal of
-this repository is to provide a basic framework for writing a basic and rather
-boring calculator. This calculator should be capable of processing expressions
-such as the following:
+A basic calculator written in Ruby, featuring a custom lexer and parser. This
+repository is meant for educational purposes primarily in the field of writing
+programming languages. It is not a webscale replacement for `bc`.
 
-    10 + 10   # => 20
-    5 * 3 + 2 # => 17
-    10 / 2    # => 5
+## Structure
 
-The following operators should be implemented:
+The project is divided into 3 categories:
 
-* addition: `+`
-* division: `/`
-* multiplication: `*`
-* subtraction: `-`
+1. The lexer
+2. The parser
+3. The evaluator
 
-You're free to implement more if you'd like. When you do, make sure you write
-some tests for it.
+The basics of these categories are discussed below.
+
+### Lexer
+
+A lexer is an application that takes text and turns it into tokens. The term
+"token" is pretty abstract but what it means is that it's a "thing" that
+typically contains the following information:
+
+1. The type of thing
+2. The actual value
+
+For example, a lexer could process the input `10` and return the following
+tokens:
+
+    [[:int, 10]]
+
+The `:int` is a Ruby Symbol and is used to indicate the type, `10` is the
+actual value of the token.
+
+Although simple lexers can be written by hand the more complicated ones are
+often written using tools such as [Ragel][ragel]. These tools often allow you
+to keep track of state, do things based on contexts and so forth.
+
+Wikipedia article: <https://en.wikipedia.org/wiki/Lexical_analysis>
+
+### Parser
+
+The term "parser" is fairly abstract and can be quite confusing depending on
+the context that it is used in. In the field of programming languages these
+parsers are typically used to build an Abstract Syntax Tree (AST) based on a
+list of tokens supplied by a lexer. The latter isn't always the case, some
+parsers don't require a separate lexing stage.
+
+The way parsers work is that you typically define a sequence of tokens and a
+corresponding action to run when a sequence is found. For example, you could
+have it run something when a integer was found followed by another integer.
+This allows for the construction of complex ASTs based on contexts, sequences
+of tokens and so forth.
+
+Although parsers can be written by hand they are often generated due to their
+complexity. In Ruby a tool that can be used for that (and is used for this
+particular project) is [Racc][racc].
+
+Wikipedia article: <https://en.wikipedia.org/wiki/LALR_parser>
+
+### Evaluator
+
+The evaluator (other names being "virtual machine" and "interpreter") takes a
+set of instructions and executes them. In case of this calculator it iterates
+over the AST produced by the parser and executes certain operations.
+
+Typically there's an extra step in between where the AST is converted to a more
+simplified set of instructions, these instructions are then executed (instead
+of the AST being used directly). This calculator does not use this extra step
+due to the extra complexity of doing so.
+
+Wikipedia article: <https://en.wikipedia.org/wiki/Interpreter_(computing)>
 
 ## Requirements
 
 * Ruby 1.9.3 or newer
 * Bundler
 
-## Setup
+## Getting Started
 
-The first step would be to fork this repository to your own account as the
-canonical one serves as a basic template. Once done, clone the repository
-locally and install the required Gems:
+Assuming you have a clone of this repository, first install the Gems:
 
     bundle install
 
-Next up, run the tests (which will fail by default):
+Then run the tests to see if everything is working:
 
     rake
 
-You can now start writing your basic calculator. Don't forget to commit your
-changes Once done be sure to ping @yorickpeterse for feedback, you'll probably
-have him on Skype or IRC (or something else) if you're working through this.
+Happy coding!
+
+[ragel]: http://www.complang.org/ragel/
+[racc]: https://github.com/tenderlove/racc
