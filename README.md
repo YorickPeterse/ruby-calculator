@@ -8,6 +8,23 @@ The idea is to use this repository to explain the steps of writing programming
 languages and how one can do so. It also serves as a playground for students
 (and myself) to mess around.
 
+## Requirements
+
+* Ruby 1.9.3 or newer
+* Bundler
+
+## Getting Started
+
+Assuming you have a clone of this repository, first install the Gems:
+
+    bundle install
+
+Then run the tests to see if everything is working:
+
+    rake
+
+Happy coding!
+
 ## Structure
 
 The project is divided into 3 categories:
@@ -73,23 +90,6 @@ of the AST being used directly). This calculator does not use this extra step
 due to the extra complexity of doing so.
 
 Wikipedia article: <https://en.wikipedia.org/wiki/Interpreter_(computing)>
-
-## Requirements
-
-* Ruby 1.9.3 or newer
-* Bundler
-
-## Getting Started
-
-Assuming you have a clone of this repository, first install the Gems:
-
-    bundle install
-
-Then run the tests to see if everything is working:
-
-    rake
-
-Happy coding!
 
 [ragel]: http://www.complang.org/ragel/
 [racc]: https://github.com/tenderlove/racc
