@@ -13,15 +13,11 @@ rule
     ;
 
   expression
-    : expression action expression { [val[1], val[0], val[2]] }
+    : expression T_MUL expression { [:mul, val[0], val[2]] }
+    | expression T_ADD expression { [:add, val[0], val[2]] }
+    | expression T_SUB expression { [:sub, val[0], val[2]] }
+    | expression T_DIV expression { [:div, val[0], val[2]] }
     | number
-    ;
-
-  action
-    : T_ADD { :add }
-    | T_DIV { :div }
-    | T_MUL { :mul }
-    | T_SUB { :sub }
     ;
 
   number

@@ -28,7 +28,7 @@ describe Calculator::Parser do
 
     example 'add three integers' do
       @parser.parse('10 + 20 + 30').should == [
-        [:add, [:int, 10], [:add, [:int, 20], [:int, 30]]]
+        [:add, [:add, [:int, 10], [:int, 20]], [:int, 30]]
       ]
     end
   end
@@ -46,7 +46,7 @@ describe Calculator::Parser do
 
     example 'subtract three integers' do
       @parser.parse('10 - 20 - 30').should == [
-        [:sub, [:int, 10], [:sub, [:int, 20], [:int, 30]]]
+        [:sub, [:sub, [:int, 10], [:int, 20]], [:int, 30]]
       ]
     end
   end
@@ -64,7 +64,7 @@ describe Calculator::Parser do
 
     example 'multiply three integers' do
       @parser.parse('10 * 20 * 30').should == [
-        [:mul, [:int, 10], [:mul, [:int, 20], [:int, 30]]]
+        [:mul, [:mul, [:int, 10], [:int, 20]], [:int, 30]]
       ]
     end
   end
