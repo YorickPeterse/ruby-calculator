@@ -18,10 +18,9 @@ module Calculator
   # `add` expression.
   #
   class Evaluator
-    attr_reader :stack
-
     def initialize
-      @stack = []
+      @stack  = []
+      @result = 0
     end
 
     ##
@@ -32,7 +31,109 @@ module Calculator
     # @return [Numeric]
     #
     def evaluate(ast)
+      callback(:on_root, ast)
 
+      ast.each do |node|
+        evaluate_node(node)
+      end
+
+      callback(:after_root, ast)
+
+      return @result
+    end
+
+    def evaluate_node(node)
+      type, *args = node
+
+      callback("on_#{type}", args)
+
+      args.each do |arg|
+        evaluate_node(arg) if arg.is_a?(Array)
+      end
+
+      callback("after_#{type}", args)
+    end
+
+    def on_root
+      push_stack
+    end
+
+    def after_root
+      @result = pop_stack[0]
+    end
+
+    def on_add
+      push_stack
+    end
+
+    def on_div
+      push_stack
+    end
+
+    def on_sub
+      push_stack
+    end
+
+    def on_mul
+      push_stack
+    end
+
+    def after_add
+      left, right = pop_stack
+
+      push(left + right)
+    end
+
+    def after_div
+      left, right = pop_stack
+
+      push(left / right)
+    end
+
+    def after_sub
+      left, right = pop_stack
+
+      push(left - right)
+    end
+
+    def after_mul
+      left, right = pop_stack
+
+      push(left * right)
+    end
+
+    def on_int(value)
+      push(value)
+    end
+
+    def on_float(value)
+      push(value)
+    end
+
+    def push_stack
+      @stack << []
+    end
+
+    def pop_stack
+      return @stack.pop
+    end
+
+    def push(value)
+      @stack.last << value
+    end
+
+    def pop
+      return @stack.last.pop
+    end
+
+    def callback(name, args)
+      return unless respond_to?(name)
+
+      if method(name).arity > 0
+        send(name, *args)
+      else
+        send(name)
+      end
     end
   end # Evaluator
 end # Calculator

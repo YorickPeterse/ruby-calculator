@@ -70,7 +70,7 @@ describe Calculator::Evaluator do
     end
 
     example 'divide three integers' do
-      ast    = @parser.parse('10 / 2 / 2')
+      ast    = @parser.parse('10.0 / 2 / 2')
       result = @evaluator.evaluate(ast)
 
       result.should == 2.5
