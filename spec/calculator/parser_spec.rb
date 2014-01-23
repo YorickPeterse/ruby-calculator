@@ -86,4 +86,12 @@ describe Calculator::Parser do
       ]
     end
   end
+
+  context 'operator precedence' do
+    example 'divide two integers and add one' do
+      @parser.parse('10 + 10 / 2').should == [
+        [:add, [:int, 10], [:div, [:int, 10], [:int, 2]]]
+      ]
+    end
+  end
 end
