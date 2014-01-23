@@ -3,8 +3,8 @@ token T_INT T_FLOAT T_ADD T_DIV T_MUL T_SUB
 options no_result_var
 
 prechigh
-  # FIXME: operator precedence is currently broken, it doesn't behave like bc.
-  left T_ADD T_SUB T_MUL T_DIV
+  left T_MUL T_DIV
+  left T_ADD T_SUB
 preclow
 
 rule
