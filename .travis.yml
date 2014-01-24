@@ -1,0 +1,17 @@
+---
+script: bundle exec rake
+
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.0
+  - rbx-2.2
+  - jruby-19mode
+
+notifications:
+  email:
+    email:
+      on_success: change
+      on_failure: always
+
+cache: bundler
