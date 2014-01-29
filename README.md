@@ -47,9 +47,9 @@ typically contains the following information:
 For example, a lexer could process the input `10` and return the following
 tokens:
 
-    [[:int, 10]]
+    [[:T_INT, 10]]
 
-The `:int` is a Ruby Symbol and is used to indicate the type, `10` is the
+The `:T_INT` is a Ruby Symbol and is used to indicate the type, `10` is the
 actual value of the token.
 
 Although simple lexers can be written by hand the more complicated ones are
