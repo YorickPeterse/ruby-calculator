@@ -17,10 +17,12 @@ module Calculator
   # Here the `mul` expression and its arguments would be processed before the
   # `add` expression.
   #
+  # This evaluator is a stack based evaluator. Stacks are implemented as simple
+  # arrays.
+  #
   class Evaluator
     def initialize
       @stack  = []
-      @result = 0
       @parser = Parser.new
     end
 
@@ -42,6 +44,8 @@ module Calculator
     # @return [Numeric]
     #
     def evaluate(ast)
+      @result = 0
+
       callback(:on_root, ast)
 
       ast.each do |node|
@@ -53,6 +57,21 @@ module Calculator
       return @result
     end
 
+    ##
+    # Evaluates a single AST node. When evaluating a node two callback methods
+    # are executed:
+    #
+    # * `on_X`
+    # * `after_X`
+    #
+    # Here X would be the name of the node type. For example, for an `:int`
+    # node these methods would be as following:
+    #
+    # * `on_int`
+    # * `after_int`
+    #
+    # @param [Array] node
+    #
     def evaluate_node(node)
       type, *args = node
 
@@ -65,78 +84,142 @@ module Calculator
       callback("after_#{type}", args)
     end
 
+    ##
+    # Called at the root of a script.
+    #
     def on_root
       push_stack
     end
 
+    ##
+    # Called at the very end of a script.
+    #
     def after_root
       @result = pop_stack[0]
     end
 
+    ##
+    # Called at the start of an addition expression.
+    #
     def on_add
       push_stack
     end
 
-    def on_div
-      push_stack
-    end
-
-    def on_sub
-      push_stack
-    end
-
-    def on_mul
-      push_stack
-    end
-
+    ##
+    # Called after an addition expression. This method adds two numbers
+    # and pushes the result on to the current stack.
+    #
     def after_add
       left, right = pop_stack
 
       push(left + right)
     end
 
+    ##
+    # Called at the start of a division expression.
+    #
+    def on_div
+      push_stack
+    end
+
+    ##
+    # Called after a division expression. This method divides two numbers and
+    # pushes the result on to the current stack.
+    #
     def after_div
       left, right = pop_stack
 
       push(left / right)
     end
 
+    ##
+    # Called at the start of a subtraction expression.
+    #
+    def on_sub
+      push_stack
+    end
+
+    ##
+    # Called after a subtraction expression. This method subtracts two numbers
+    # and pushes the result on to the current stack.
+    #
     def after_sub
       left, right = pop_stack
 
       push(left - right)
     end
 
+    ##
+    # Called at the start of a multiplication expression.
+    #
+    def on_mul
+      push_stack
+    end
+
+    ##
+    # Called after a multiplication expression. This method multiplies two
+    # numbers and pushes the result on to the current stack.
+    #
     def after_mul
       left, right = pop_stack
 
       push(left * right)
     end
 
+    ##
+    # Called when evaluating an integer. This method simply pushes the value on
+    # to the current stack.
+    #
+    # @param [Fixnum] value
+    #
     def on_int(value)
       push(value)
     end
 
+    ##
+    # Called when evaluating a float. This method simply pushes the value on to
+    # the current stack.
+    #
+    # @param [Float] value
+    #
     def on_float(value)
       push(value)
     end
 
+    ##
+    # Creates a new stack.
+    #
     def push_stack
       @stack << []
     end
 
+    ##
+    # Pops the most recent stack and returns it.
+    #
     def pop_stack
       return @stack.pop
     end
 
+    ##
+    # Pushes a value on to the current stack.
+    #
     def push(value)
       @stack.last << value
     end
 
+    ##
+    # Pops a value from the current stack.
+    #
     def pop
       return @stack.last.pop
     end
 
+    private
+
+    ##
+    # @param [String] name The name of the method to call.
+    # @param [Array] args Arguments to pass to the method.
+    #
     def callback(name, args)
       return unless respond_to?(name)
 
