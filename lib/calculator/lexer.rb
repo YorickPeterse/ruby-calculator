@@ -50,7 +50,10 @@ module Calculator
     def lex(string)
       scanner = StringScanner.new(string)
       tokens  = []
-
+       if /[a-zA-Z]/ === string 
+          error = SyntaxError.new
+          error.invalid_command()
+        end 
       until scanner.eos?
         token = next_token(scanner)
 
@@ -71,7 +74,8 @@ module Calculator
       token = nil
 
       TOKENS.each do |pat, type|
-        found = scanner.scan(pat)
+  
+        found = scanner.scan(pat) 
 
         if found and type
           token = [type, nil]

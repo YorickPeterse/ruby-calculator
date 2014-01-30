@@ -95,3 +95,4 @@ describe Calculator::Parser do
     end
   end
 end
+

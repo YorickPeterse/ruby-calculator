@@ -30,4 +30,16 @@ describe Calculator::Lexer do
   example 'lex a subtraction expression' do
     @lexer.lex('10 - 2').should == [[:T_INT, 10], [:T_SUB, nil], [:T_INT, 2]]
   end
+
+  context 'lex a word' do
+
+    example "should exit" do
+     lambda { @lexer.lex("foo") }.should raise_error SystemExit
+    end
+
+#    example "should print out message" do
+#   @lexer.lex("foo").should == "Invalid command please enter a valid value e.g '1 + 2'"
+#  end
+
+  end
 end
