@@ -44,8 +44,29 @@ describe Calculator::Evaluator do
       @evaluator.evaluate_string('10 / 2').should == 5
     end
 
-    example 'divide three integers' do
+    example 'divide two integers and a float' do
       @evaluator.evaluate_string('10.0 / 2 / 2').should == 2.5
     end
   end
+
+  context 'modulo' do
+     example 'modulo two integers' do
+      @evaluator.evaluate_string('10 % 6').should == 4
+    end
+
+    example 'modulo three integers' do
+      @evaluator.evaluate_string('10 % 6 % 2').should == 0
+    end
+  end
+
+  context 'exponent' do
+     example 'find exponent two integers' do
+      @evaluator.evaluate_string('2 ^ 3').should == 8
+    end
+
+    example 'find exponent three integers' do
+      @evaluator.evaluate_string('2 ^ 3 ^ 2').should == 64
+    end
+  end
+
 end

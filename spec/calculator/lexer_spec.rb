@@ -30,4 +30,12 @@ describe Calculator::Lexer do
   example 'lex a subtraction expression' do
     @lexer.lex('10 - 2').should == [[:T_INT, 10], [:T_SUB, nil], [:T_INT, 2]]
   end
+
+  example 'lex a modulo expression' do
+    @lexer.lex('10 % 2').should == [[:T_INT, 10], [:T_MOD, nil], [:T_INT, 2]]
+  end
+
+  example 'lex a exponential expression' do
+    @lexer.lex('10 ^ 2').should == [[:T_INT, 10], [:T_EXP, nil], [:T_INT, 2]]
+  end
 end

@@ -2,14 +2,14 @@ class Calculator::Parser
 
 # These are the token types Racc should know about. They are the same as the
 # lexer's token types.
-token T_INT T_FLOAT T_ADD T_DIV T_MUL T_SUB
+token T_INT T_FLOAT T_ADD T_DIV T_MUL T_SUB T_MOD T_EXP
 
 options no_result_var
 
 # This defines the operator precedence of various operators. This precedence is
 # based on what is used by the Unix `bc` command.
 prechigh
-  left T_MUL T_DIV
+  left T_MUL T_DIV T_MOD T_EXP
   left T_ADD T_SUB
 preclow
 
@@ -33,6 +33,8 @@ rule
     | expression T_ADD expression { [:add, val[0], val[2]] }
     | expression T_SUB expression { [:sub, val[0], val[2]] }
     | expression T_DIV expression { [:div, val[0], val[2]] }
+    | expression T_MOD expression { [:mod, val[0], val[2]] }
+    | expression T_EXP expression { [:exp, val[0], val[2]] }
     | number
     ;
 

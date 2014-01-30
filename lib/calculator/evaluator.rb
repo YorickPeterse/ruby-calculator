@@ -129,6 +129,23 @@ module Calculator
     def after_div
       left, right = pop_stack
 
+      push(left + right)
+    end
+
+    ##
+    # Called at the start of a division expression.
+    #
+    def on_div
+      push_stack
+    end
+
+    ##
+    # Called after a division expression. This method divides two numbers and
+    # pushes the result on to the current stack.
+    #
+    def after_div
+      left, right = pop_stack
+
       push(left / right)
     end
 
@@ -164,6 +181,26 @@ module Calculator
       left, right = pop_stack
 
       push(left * right)
+    end
+
+    def on_mod
+      push_stack
+    end
+
+    def after_mod
+      left, right = pop_stack
+
+      push(left % right)
+    end
+
+    def on_exp
+      push_stack
+    end
+
+    def after_exp
+      left, right = pop_stack
+
+      push(left ** right)
     end
 
     ##

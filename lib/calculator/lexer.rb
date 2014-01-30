@@ -26,7 +26,9 @@ module Calculator
       /\+/        => :T_ADD,
       /\*/        => :T_MUL,
       /\//        => :T_DIV,
-      /\-/        => :T_SUB
+      /\-/        => :T_SUB,
+      /\%/        => :T_MOD,
+      /\^/        => :T_EXP
     }
 
     ##
