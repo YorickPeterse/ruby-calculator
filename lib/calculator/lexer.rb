@@ -50,10 +50,11 @@ module Calculator
     def lex(string)
       scanner = StringScanner.new(string)
       tokens  = []
-       if /[a-zA-Z]/ === string 
-          error = SyntaxError.new
-          error.invalid_command()
-        end 
+
+      if /[^\d\s\+\*\^\%\/\-\.]/ === string 
+        raise ArgumentError, "This is a invalid argument!"
+      end 
+
       until scanner.eos?
         token = next_token(scanner)
 
