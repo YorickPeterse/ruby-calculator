@@ -22,7 +22,7 @@ module Calculator
     TOKENS = {
       /\d+\.+\d*/ => :T_FLOAT,
       /\d+/       => :T_INT,
-      /\s+/       => nil,
+      /\s/       => nil,
       /\+/        => :T_ADD,
       /\*/        => :T_MUL,
       /\//        => :T_DIV,
@@ -51,10 +51,6 @@ module Calculator
       scanner = StringScanner.new(string)
       tokens  = []
 
-      if /[^\d\s\+\*\^\%\/\-\.]/ === string 
-        raise ArgumentError, "This is a invalid argument!"
-      end 
-
       until scanner.eos?
         token = next_token(scanner)
 
@@ -73,20 +69,31 @@ module Calculator
     #
     def next_token(scanner)
       token = nil
+      valid = false
 
       TOKENS.each do |pat, type|
-  
-        found = scanner.scan(pat) 
+
+        found = scanner.scan(pat)
 
         if found and type
           token = [type, nil]
+          valid = true
 
           if CONVERSION[type]
             token[1] = found.send(CONVERSION[type])
           end
 
           break
+
         end
+      end
+
+      if token.nil?
+        return token
+      end
+
+      unless valid
+        raise "This is a error"
       end
 
       return token
